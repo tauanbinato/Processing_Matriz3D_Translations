@@ -1,22 +1,26 @@
 PImage grid;
 PVector p0 = new PVector(0,0); 
-PVector p1 = new PVector(200,0); 
+PVector p1 = new PVector(200,50); 
 PVector p2 = new PVector(100,100); 
 PVector pCenter = new PVector(0,0);
 
 //Matriz
 float [][] idMat = new float[][]
 {
- {1,0,0,0},
- {0,1,0,0},
+ {1,0,0,2},
+ {0,1,0,2},
  {0,0,1,0},
  {0,0,0,1}
  };
+
+float [][] pMatriz = new float[0][3];
 
 void setup() 
 {
   size(800, 600);
   //grid = loadImage("grid.jpg");
+  pMatriz = c_PVectorToMatriz2D(p1);
+  m_TranslatePoint(idMat, pMatriz , 30 , 30);
   
 }
 
@@ -26,10 +30,10 @@ void draw()
   background(0);
   //image(grid, 0, 0);
   stroke(255);
-  //line(p0.x, p0.y , p1.x,p1.y);
-  //line(p1.x,p1.y , p2.x,p2.y);
-  //line(p2.x,p2.y , p0.x,p0.y);
+  
   m_PrintAtPosition(idMat , width/2,height/2);
+  m_PrintAtPosition(pMatriz , width/2 - 100,height/2 -100);
+  
 }
 
 /*
@@ -46,7 +50,6 @@ float c_ToRadius(float angle)
   
   float result = angle * (PI/180);
   return result;
-  
 }
 
 float[][] c_PVectorToMatriz2D(PVector v1)
@@ -80,6 +83,7 @@ float[][] c_PVectorToMatriz3D(PVector v1)
 ***************************************************************************************************************
 */
 
+//MATRIZ PRINTER-------------------------------------
 void m_PrintAtPosition(float[][] matriz , float x , float y){
   
   int xStep = 30;
@@ -98,7 +102,7 @@ void m_PrintAtPosition(float[][] matriz , float x , float y){
 
 //MATRIZ TRANSLATION-------------------------------------
 
-void m_TranslatePoint(float[][] p, float x, float y)
+void m_TranslatePoint(float[][] mId, float[][] p , float x, float y)
 {
   /*
   T(a,b) =  [1,0,0,a]
@@ -107,45 +111,59 @@ void m_TranslatePoint(float[][] p, float x, float y)
             [0,0,0,1]
   */
   
+  
   //Checking if is 2D OR 3D
-  if(p.length == 3)
+  if(p.length == 3 && mId.length == 3)
   {
-    float[][]resultPoint = new float[3][3];
+     
     
-    //Creating the matriz with the coords to be multiplied by the PVector
-    float[][] matriz = new float[3][3];
-    matriz[0][2] = x;
-    matriz[1][2] = y;
+    mId[0][2] = x;
+    mId[1][2] = y;
+    mId[1][2] = 1;
     
-    for(int i =0 ; i < matriz.length ; i++)
+    for(int i =0 ; i < mId.length ; i++)
     {
-        for(int j =0 ; j < matriz[i].length ; j++)
+        for(int j =0 ; j < mId[i].length ; j++)
         {
-         resultPoint[0][j] = matriz[i][j] * p[0][j];
+         p[0][j] = mId[i][j] * p[0][j];
         }
       
     }
     
     
+    
   }
+  /*
   else if(p.length == 4)
   {
     
-    float[][]resultPoint = new float[4][4];
-  
-    //Creating the matriz with the coords to be multiplied by the PVector
-    float[][] matriz = new float[4][4];
-    matriz[0][3] = x;
-    matriz[1][3] = y;
+    float[][]result = new float[0][4];
     
+    mId[0][3] = x;
+    mId[1][3] = y;
+    mId[1][3] = 1;
+    
+    for(int i =0 ; i < mId.length ; i++)
+    {
+        for(int j =0 ; j < mId[i].length ; j++)
+        {
+         result[0][j] = mId[i][j] * p[0][j];
+        }
+      
+    }
+    
+    return result;
   }
+  
   else
   {
-    return;
+    exit();
   }
   
-  
-  return;
+  float[][] a = new float[0][0];
+  return a;
+  */
+ 
 }
 
 //-------------------------------------------------------
