@@ -66,12 +66,19 @@ float[][] c_PVectorToMatriz3D(PVector v1)
 /*
 ***************************************************************************************************************
 ***************************************************************************************************************
-                                                 ALL ABOUT MATRIZ =============================================
+                                                 ALL ABOUT CHECKERS ========================================
 ***************************************************************************************************************
 ***************************************************************************************************************
 */
 
 
+/*
+***************************************************************************************************************
+***************************************************************************************************************
+                                                 ALL ABOUT MATRIZ =============================================
+***************************************************************************************************************
+***************************************************************************************************************
+*/
 
 void m_PrintAtPosition(float[][] matriz , float x , float y){
   
@@ -93,7 +100,6 @@ void m_PrintAtPosition(float[][] matriz , float x , float y){
 
 void m_TranslatePoint(float[][] p, float x, float y)
 {
-  
   /*
   T(a,b) =  [1,0,0,a]
             [0,1,0,b]
@@ -101,13 +107,42 @@ void m_TranslatePoint(float[][] p, float x, float y)
             [0,0,0,1]
   */
   
+  //Checking if is 2D OR 3D
+  if(p.length == 3)
+  {
+    float[][]resultPoint = new float[3][3];
+    
+    //Creating the matriz with the coords to be multiplied by the PVector
+    float[][] matriz = new float[3][3];
+    matriz[0][2] = x;
+    matriz[1][2] = y;
+    
+    for(int i =0 ; i < matriz.length ; i++)
+    {
+        for(int j =0 ; j < matriz[i].length ; j++)
+        {
+         resultPoint[0][j] = matriz[i][j] * p[0][j];
+        }
+      
+    }
+    
+    
+  }
+  else if(p.length == 4)
+  {
+    
+    float[][]resultPoint = new float[4][4];
   
-  
-  //Creating the matriz with the coords to be multiplied by the PVector
-  float[][] matriz = new float[3][3];
-  matriz[0][3] = x;
-  matriz[1][3] = y;
-  
+    //Creating the matriz with the coords to be multiplied by the PVector
+    float[][] matriz = new float[4][4];
+    matriz[0][3] = x;
+    matriz[1][3] = y;
+    
+  }
+  else
+  {
+    return;
+  }
   
   
   return;
